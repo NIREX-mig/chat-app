@@ -5,6 +5,14 @@ import { IoSend } from "react-icons/io5";
 const ChatFoter = ({message, setMessage}) => {
   
   const [text, setText] = useState("");
+
+  let input = document.getElementById("message");
+  input?.addEventListener('keypress', function (e){
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleOnClick();
+    }
+  })
   
   const handleOnClick = (e) => {
    setMessage(text);
@@ -19,8 +27,10 @@ const ChatFoter = ({message, setMessage}) => {
       <input
         type="text"
         name="message"
+        id="message"
         value={text}
         onChange={handleOnChange}
+        placeholder="Type a message"
         className="focus:outline-none bg-secoundry h-10 rounded-md p-2 w-[95%]"
       />
       <div className="p-2   group hover:bg-white rounded-full text-center "

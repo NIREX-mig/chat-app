@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState,useEffect } from "react";
+import { useRouter } from "next/navigation";
 import ChatCard from "@/components/ChatCard";
 import ChatFoter from "@/components/ChatFoter";
 import Header from "@/components/Header";
@@ -8,6 +9,15 @@ import Header from "@/components/Header";
 export default function Home() {
 
   const [message, setMessage] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    const isAuthenticated =
+      typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
+    if (!isAuthenticated) {
+      router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/login`);
+    }
+  }, [router])
 
   return (
     <section className=" w-full h-screen">
