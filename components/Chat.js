@@ -6,8 +6,6 @@ const Chat = ({ user }) => {
       <RxAvatar size={40} />
       <p>
         {user.contect}
-
-
       </p>
     </section>
   )
