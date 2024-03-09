@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useEffect } from "react"
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -117,7 +118,7 @@ export default function Signup() {
               />
             </div>
             {errors.cpassword && <span className="text-red-600">{errors.cpassword}</span>}
-            <button type="submit" className="bg-blue-800 py-2 w-full px-7 text-xl rounded-lg my-3 focus:ring-2 focus:ring-blue-700 hover:bg-blue-900 font-bold disabled:bg-gray-600" disabled={disabled} >Sign up</button>
+            <button type="submit" className="bg-blue-800 py-2 w-full px-7 text-xl rounded-lg my-3 focus:ring-2 focus:ring-blue-700 hover:bg-blue-900 font-bold disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed" disabled={disabled} >Sign up</button>
           </form>
           <p className="flex text-sm font-light ">
             login with account?

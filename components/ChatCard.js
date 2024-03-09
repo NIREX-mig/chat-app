@@ -1,11 +1,11 @@
-
+'use client';
 
 
 const ChatCard = ({message}) => {
   return (
-    <div>
-      
-    </div>
+    <section>
+        ChatCard
+    </section>
   )
 }
 

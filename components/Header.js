@@ -1,3 +1,5 @@
+'use client';
+
 import { FiMoreVertical } from "react-icons/fi";
 import { RxAvatar } from "react-icons/rx";
 

@@ -1,8 +1,8 @@
-
+"use client";
 import { IoClose } from "react-icons/io5";
 
 
-const AddChatModal = ({ handleClose,handleAddEmail, setEmail, email}) => {
+const AddChatModal = ({ handleClose,handleAddEmail, setEmail, email, errors}) => {
 
 
 
@@ -25,14 +25,16 @@ const AddChatModal = ({ handleClose,handleAddEmail, setEmail, email}) => {
               type="text"
               name="email"
               value={email}
+              placeholder="Enter Email"
               onChange={handleOnChange}
               autoComplete="off"
               className="w-full bg-secoundry border-white rounded-lg border-2 focus:outline-none p-2"
-            />
+              />
           </div>
+              {errors.email && <span className="text-red-500 ml-16 ">{errors.email}</span>}
           <button
             type="submit"
-            className="flex justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg w-full sm:w-auto px-5 py-2.5 mx-auto"
+            className="flex justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg w-full sm:w-auto px-5 py-2.5 mx-auto  disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
           >Add Email</button>
         </form>
       </section>

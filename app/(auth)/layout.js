@@ -16,7 +16,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <div>
       <ToastContainer
         position="top-center"
         autoClose={5000}
@@ -28,10 +28,8 @@ export default function RootLayout({ children }) {
         draggable
         pauseOnHover
         theme="dark"
-/>
-      {/* Same as */}
-      <ToastContainer />
-      <body className={inter.className}>{children}</body>
-    </html>
+      />
+      <main className={inter.className}>{children}</main>
+    </div>
   )
 }
