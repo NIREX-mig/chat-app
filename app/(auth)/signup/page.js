@@ -4,10 +4,13 @@ import { useState, useEffect } from "react"
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { validation } from "@/utils/authvalidator";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Signup() {
   const [formData, setFormData] = useState({
     email: "",
+    username : "",
     password: "",
     cpassword: "",
   });
@@ -42,14 +45,35 @@ export default function Signup() {
         headers : {
           "Content-Type" : "application/json"
         },
-        body : JSON.stringify({email : formData.email, password : formData.password}) 
+        body : JSON.stringify({email : formData.email,username : formData.username, password : formData.password}) 
       });
       const data = await res.json();
       setDisabled(false);
       if(data.success){
-        setFormData({ email: "", password: "", cpassword: "" })
+        toast.success( "Signup Successfully" , {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          });
+        setFormData({ email: "", password: "" , username : "", cpassword: "" })
         setDisabled(false);
         router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/login`)
+      } else{
+        toast.error( data.Error , {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          });
       }
 
     }
@@ -87,6 +111,20 @@ export default function Signup() {
                 required
               />
               {errors.email && <span className="text-red-600">{errors.email}</span>}
+            </div>
+            <div className="flex flex-col mb-2">
+              <label title="text" className="mb-3">username</label>
+              <input
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleOnChange}
+                autoComplete="off"
+                placeholder="Enter username"
+                className="bg-secoundry border-gray-500 border-2 p-2 rounded-lg focus:outline-none"
+                required
+              />
+              {errors.username && <span className="text-red-600">{errors.username}</span>}
             </div>
             <div className="flex flex-col">
               <label title="password" className="mb-3">Password</label>

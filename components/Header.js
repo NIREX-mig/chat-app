@@ -10,10 +10,10 @@ const Header = () => {
         <div className="flex gap-3">
           <RxAvatar size={40} />
           <div>
-            <p>
+            <p className="cursor-default">
               akay@gmail.com
             </p>
-            <p className="text-sm">Last active</p>
+            <p className="text-sm cursor-default">Last active</p>
           </div>
       </div>
           <FiMoreVertical size={20} />

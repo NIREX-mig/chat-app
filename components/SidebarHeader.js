@@ -37,12 +37,12 @@ const SidebarHeader = () => {
   return (
     <section className="flex justify-between items-center border-b-2 border-secoundry py-2 pb-4">
       <RxAvatar size={30} className="cursor-pointer" onClick={handleOnClick} />
-      {modal && <section className="absolute left-7 top-14 p-5 rounded-xl bg-secoundry">
-        <div className=" py-3 px-2 flex items-center gap-3 cursor-pointer hover:bg-primary" onClick={handleManageProfile}>
+      {modal && <section className="absolute left-7 top-14 p-5 rounded-xl bg-secoundry border-gray-700 border">
+        <div className=" py-3 px-4 flex items-center gap-3 cursor-pointer hover:bg-primary" onClick={handleManageProfile}>
           <CgProfile size={25} />
           <h3>Manage Profile</h3>
         </div>
-        <div className="py-3 px-2 flex items-center gap-3 cursor-pointer hover:bg-primary" onClick={handleLogOut}>
+        <div className="py-3 px-4 flex items-center gap-3 cursor-pointer hover:bg-primary" onClick={handleLogOut}>
           <FiLogOut size={25} />
           <h3>Log Out</h3>
         </div>

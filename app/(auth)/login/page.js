@@ -2,7 +2,7 @@
 import { useState,useEffect } from "react"
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { validation } from "@/utils/authvalidator";
+import { validation } from "@/utils/loginvalidator";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -55,7 +55,7 @@ export default function Login() {
           });
         setFormData({ email: "", password: "" });
         setDisabled(false);
-        router.push("/");
+        router.push(`${process.env.NEXT_PUBLIC_BASE_URL}`);
       } else{
         toast.error( data.Error , {
           position: "top-center",
