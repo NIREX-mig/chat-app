@@ -1,13 +1,14 @@
-"use client";
-import { useState,useEffect } from "react"
+"use client"
+
+import { useState, useEffect } from "react"
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { validation } from "@/utils/loginvalidator";
-import { toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import instance from "@/utils/axiosConfig";
+import { errorToast, successToast } from "@/utils/toastshow";
 
 export default function Login() {
-  
+
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -19,7 +20,7 @@ export default function Login() {
 
   useEffect(() => {
     const isAuthenticated =
-      typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
+      typeof window !== "undefined" ? localStorage.getItem("refershToken") : null;
     if (isAuthenticated) {
       router.push(`${process.env.NEXT_PUBLIC_BASE_URL}`);
     }
@@ -27,46 +28,34 @@ export default function Login() {
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
+
     setDisabled(false);
+
     const validate = validation(formData);
     setErrors(validate);
+
     if (validate.success) {
-      setDisabled(true);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/auth/login`, {
-        method : "POST",
-        headers : {
-          "Content-Type" : "application/json"
-        },
-        body : JSON.stringify({email : formData.email, password : formData.password}) 
-      });
-      const data = await res.json();
-      setDisabled(false);
-      if(data.success){
-        localStorage.setItem("authToken", data.authToken);
-        toast.success( "Login Successfully" , {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-          });
-        setFormData({ email: "", password: "" });
+
+      try {
+        setDisabled(true);
+
+        const response = await instance.post("/api/v1/auth/login", { email: formData.email, password: formData.password });
+
         setDisabled(false);
-        router.push(`${process.env.NEXT_PUBLIC_BASE_URL}`);
-      } else{
-        toast.error( data.Error , {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-          });
+
+        if (response.data.success) {
+          localStorage.setItem("refershToken", response.data.data.refershToken);
+          successToast(response)
+          setFormData({ email: "", password: "" });
+          setDisabled(false);
+          setTimeout(() => {
+            router.push(`${process.env.NEXT_PUBLIC_BASE_URL}`);
+          }, 500);
+        }
+      } catch (error) {
+        setDisabled(false)
+        console.log(error)
+        errorToast(error)
       }
     }
   }

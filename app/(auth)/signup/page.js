@@ -6,22 +6,24 @@ import { useRouter } from "next/navigation";
 import { validation } from "@/utils/authvalidator";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import instance from "@/utils/axiosConfig";
+import { errorToast, successToast } from "@/utils/toastshow";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
     email: "",
-    username : "",
+    username: "",
     password: "",
     cpassword: "",
   });
-  
+
   const [disabled, setDisabled] = useState(false);
   const [errors, setErrors] = useState({});
   const router = useRouter();
 
   useEffect(() => {
     const isAuthenticated =
-      typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
+      typeof window !== "undefined" ? localStorage.getItem("refershToken") : null;
     if (isAuthenticated) {
       router.push(`${process.env.NEXT_PUBLIC_BASE_URL}`);
     }
@@ -39,41 +41,20 @@ export default function Signup() {
     setErrors(validate);
     console.log(validate)
     if (validate.success) {
-      setDisabled(true)
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/auth/signup`, {
-        method : "POST",
-        headers : {
-          "Content-Type" : "application/json"
-        },
-        body : JSON.stringify({email : formData.email,username : formData.username, password : formData.password}) 
-      });
-      const data = await res.json();
-      setDisabled(false);
-      if(data.success){
-        toast.success( "Signup Successfully" , {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-          });
-        setFormData({ email: "", password: "" , username : "", cpassword: "" })
+      try {
+        setDisabled(true)
+        const response = await instance.post("/api/v1/auth/signup", { email: formData.email, username: formData.username, password: formData.password });
         setDisabled(false);
-        router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/login`)
-      } else{
-        toast.error( data.Error , {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-          });
+        if (response.data.success) {
+          successToast(response)
+          setFormData({ email: "", password: "", username: "", cpassword: "" })
+          setDisabled(false);
+          router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/login`)
+        }
+      } catch (error) {
+        setDisabled(false);
+        console.log(error)
+        errorToast(error)
       }
 
     }

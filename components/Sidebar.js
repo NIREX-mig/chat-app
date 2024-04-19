@@ -18,12 +18,6 @@ const Sidebar = () => {
   const [errors, setErrors] = useState({});
 
 
-  const { data } = useGetContectsQuery();
-
-  useEffect(() => {
-    setContects(data);
-  }, [setContects, data])
-
 
   const handleAddName = async (e) => {
     e.preventDefault();

@@ -7,14 +7,14 @@ const Chat = ({ user }) => {
   const router = useRouter();
 
   const handleOnClick = () => {
-    router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/chat/${user._id}`)
+    router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/chat/${user.participants[1]}`)
   }
   return (
     <section className=" w-full flex items-center justify-around hover:bg-secoundry " onClick={handleOnClick}>
       <div className="flex items-center gap-5 truncate my-1 p-2 ">
         <RxAvatar size={40} />
         <h3 className="cursor-default">
-          {user?.contect}
+          {user?.name}
         </h3>
       </div>
       <div>

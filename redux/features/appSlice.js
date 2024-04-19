@@ -3,6 +3,7 @@ const { createSlice } = require("@reduxjs/toolkit");
 
 const initialState = {
     contect : [],
+    socket : null
 }
 
 const appSlice = createSlice({
@@ -11,11 +12,15 @@ const appSlice = createSlice({
     reducers :{
         getContect : (state, action) =>{
 
-        }
+        },
+        setSocket : (state, action ) => {
+            state.socket = action.payload;
+        },
+
 
     }
 });
 
-export const {getContect} = appSlice.actions;
+export const {getContect, setSocket} = appSlice.actions;
 
 export default appSlice.reducer;

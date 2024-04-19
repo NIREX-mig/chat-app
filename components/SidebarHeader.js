@@ -1,11 +1,13 @@
 'use client';
 
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FiMoreVertical } from "react-icons/fi";
 import { RxAvatar } from "react-icons/rx";
 import { FiLogOut } from "react-icons/fi";
 import { CgProfile } from "react-icons/cg";
 import { useRouter } from "next/navigation";
+import instance from "@/utils/axiosConfig";
+import { errorToast, successToast } from "@/utils/toastshow";
 
 
 const SidebarHeader = () => {
@@ -16,17 +18,27 @@ const SidebarHeader = () => {
 
   useEffect(() => {
     const isAuthenticated =
-      typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
+      typeof window !== "undefined" ? localStorage.getItem("refershToken") : null;
     if (!isAuthenticated) {
       router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/login`);
     }
-  }, [router,modal]);
+  }, [router, modal]);
 
-  const handleLogOut =() =>{
-    localStorage.removeItem('authToken');
-    setModal(false);
+  const handleLogOut = async () => {
+    try {
+      const response = await instance.post('/api/v1/auth/logout');
+      if (response.data.success) {
+        successToast(response)
+        setTimeout(() => {
+          localStorage.removeItem('refershToken');
+          setModal(false);
+        }, 500);
+      }
+    } catch (error) {
+      errorToast(error)
+    }
   }
-  const handleManageProfile = () =>{
+  const handleManageProfile = () => {
 
   }
 
