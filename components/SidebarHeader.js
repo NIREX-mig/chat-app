@@ -35,6 +35,7 @@ const SidebarHeader = () => {
         }, 500);
       }
     } catch (error) {
+      setModal(false);
       errorToast(error)
     }
   }
