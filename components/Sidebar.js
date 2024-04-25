@@ -5,70 +5,18 @@ import SidebarHeader from "./SidebarHeader"
 import AddChatModal from "./AddChatModal"
 import { FaSearch } from "react-icons/fa"
 import { useGetContectsQuery } from "@/redux/features/chatApi";
-import { nameValidation } from "@/utils/namevalidator";
-import { toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
 
 
 const Sidebar = () => {
   const [search, setSearch] = useState("");
   const [modalOpen, setModalOpen] = useState(false)
-  const [name, setName] = useState("")
   const [contects, setContects] = useState([])
-  const [errors, setErrors] = useState({});
 
-
-
-  const handleAddName = async (e) => {
-    e.preventDefault();
-    const validate = nameValidation(name);
-    setErrors(validate);
-    if (validate.success) {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/contect/addcontect`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "authToken": localStorage.getItem('authToken')
-        },
-        body: JSON.stringify({ name })
-      })
-      const response = await res.json();
-      setContects(contects.concat(response.savedContect))
-      if(response.success){
-        toast.success( "Successfully Add Name" , {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-          });
-        setName("");
-        setModalOpen(false);
-      } else {
-        toast.error( response.Error , {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-          });
-      }
-    }
-  }
 
   const handleClose = () => {
     setModalOpen(false);
   }
 
-  const handleClick = () => {
-    setModalOpen(true);
-  }
 
   const handleOnChange = (e) => {
     setSearch(e.target.value);
@@ -91,13 +39,13 @@ const Sidebar = () => {
       </section>
 
       <section>
-        <button type="button" onClick={handleClick} className="w-full hover:bg-secoundry my-1 py-1">Start A New Chat</button>
-        {modalOpen && <AddChatModal handleAddName={handleAddName} handleClose={handleClose} setName={setName} errors={errors}/>}
+        <button type="button" onClick={()=>setModalOpen(true)} className="w-full hover:bg-secoundry my-1 py-1">Start A New Chat</button>
+        {modalOpen && <AddChatModal  handleClose={handleClose} setModalOpen={setModalOpen} />}
       </section>
 
       <section className="h-[78%] overflow-hidden overflow-y-auto">
         {contects?.map((user, i) => {
-          return <Chat key={i} user={user}/>
+          return <Chat key={i} />
         })}
       </section>
     </section>

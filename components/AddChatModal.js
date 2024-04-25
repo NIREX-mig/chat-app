@@ -1,29 +1,52 @@
 "use client";
 
 import instance from "@/utils/axiosConfig";
+import { errorToast, successToast } from "@/utils/toastshow";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
+import Select from 'react-select';
 
 
-const AddChatModal = ({ handleClose,handleAddName, setName, name}) => {
-  const [data, setData] = useState(null);
+const AddChatModal = ({ handleClose, setModalOpen}) => {
+  const [options, setOptions] = useState([]);
+  const [list, setList] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
 
-  useEffect(() =>{
-    async function searchData(){
-      const res = await instance.get("/api/v1/chat/search");
-      if(res.data.success){
-        setData(res.data.data)
-      }
-    }
+  useEffect(() => {
     searchData();
-    console.log(data);
   }, [])
 
 
+  const searchData = async () => {
+    const res = await instance.get("/api/v1/chat/search");
+    if (res.data.success) {
+      const dataArray = res.data.data;
+      let tempArray = [];
+      for (let x in dataArray) {
+        let object = {
+          value: dataArray[x].username,
+          label: dataArray[x].username,
+          id: dataArray[x]._id,
+          username: dataArray[x].username,
+          email: dataArray[x].email
+        }
+        tempArray.push(object)
+      }
+      setOptions(options.concat(tempArray))
+    }
+  }
 
-  const handleOnChange = (e) => {
-    setName(e.target.value);
+  const handleOnSubmit = async  () => {
+    const response = await instance.post(`/api/v1/chat/createonetoonechat/${selectedOption.id}`);
+    if(response.data.success){
+      successToast(response);
+      setModalOpen(false);
+    }
+  }
+
+  const handleOnChange = (selectedOption) => {
+    setSelectedOption(selectedOption)
   }
 
   return (
@@ -31,28 +54,21 @@ const AddChatModal = ({ handleClose,handleAddName, setName, name}) => {
       <section className="-translate-x-[50%] -translate-y-[50%] fixed top-[20%] left-[50%] md:w-[40%] w-full h-[30%] rounded-lg bg-secoundry p-3">
         <IoClose size={30} className="absolute top-2 right-2 cursor-pointer hover:bg-primary" onClick={handleClose} />
         <h3 className="text-xl text-center mb-3 p-2 font-bold" >Add A New Chat</h3>
-        <form onSubmit={handleAddName}>
-          <div className="flex items-center gap-2 p-2 ">
-            <input
-              type="text"
-              name="name"
-              value={name}
-              placeholder="Add Yours Chats"
+        <div className="flex flex-col gap-6">
+
+          <div className="text-secoundry">
+            <Select
+              className=""
+              value={selectedOption}
               onChange={handleOnChange}
-              autoComplete="off"
-              className="w-full bg-secoundry border-white rounded-lg border-2 focus:outline-none p-2"
-              />
+              options={options}
+              placeholder="Select to add Chat..."
+            />
           </div>
-          <div className="">
-            
-          </div>
-          <button
-            type="submit"
-            className="flex justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg w-full sm:w-auto px-5 py-2.5 mx-auto  disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
-          >Add Chat</button>
-        </form>
+          <button type="button" onClick={handleOnSubmit} className="text-white bg-blue-700 hover:bg-blue-800  font-bold rounded-lg text-lg py-2.5 px-7  mx-auto">Create Chat</button>
+        </div>
       </section>
-    </section>
+    </section >
   )
 }
 
