@@ -2,25 +2,21 @@
 const { createSlice } = require("@reduxjs/toolkit");
 
 const initialState = {
-    contect : [],
-    socket : null
+    selectedUser : {}
 }
 
 const appSlice = createSlice({
     name : 'chat',
     initialState,
     reducers :{
-        getContect : (state, action) =>{
-
-        },
-        setSocket : (state, action ) => {
-            state.socket = action.payload;
+        setSelectedUser : (state, action ) => {
+            state.selectedUser = action.payload;
         },
 
 
     }
 });
 
-export const {getContect, setSocket} = appSlice.actions;
+export const {setSelectedUser} = appSlice.actions;
 
 export default appSlice.reducer;

@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { IoSend } from "react-icons/io5";
 
@@ -7,8 +8,9 @@ const ChatFoter = ({ text, setText, pressEnter, handleOnClick }) => {
   const handleOnChange = (e) => {
     setText(e.target.value);
   }
+
   return (
-    <section className="w-full bg-primary p-4 border-t-2 border-secoundry">
+    <section className="w-full bg-primary p-4 border-t-2 border-secoundry flex gap-5 items-center">
       {/* <form onSubmit={handleonClick} className="w-full flex gap-5 items-center" > */}
         <input
           type="text"

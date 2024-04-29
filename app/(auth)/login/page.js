@@ -18,6 +18,7 @@ export default function Login() {
   const [errors, setErrors] = useState({});
   const router = useRouter();
 
+
   useEffect(() => {
     const isAuthenticated =
       typeof window !== "undefined" ? localStorage.getItem("refershToken") : null;
@@ -45,6 +46,9 @@ export default function Login() {
 
         if (response.data.success) {
           localStorage.setItem("refershToken", response.data.data.refershToken);
+          const user = JSON.stringify(response.data.data.user)
+          localStorage.setItem("user", user);
+          
           successToast(response)
           setFormData({ email: "", password: "" });
           setDisabled(false);

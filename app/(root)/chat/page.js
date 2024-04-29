@@ -1,18 +1,18 @@
 "use client";
-import { useState, useEffect } from "react";
+
+import { useState } from "react";
 import ChatFoter from "@/components/ChatFoter";
 import Header from "@/components/Header";
 import { useSelector } from "react-redux";
 
 
-
-export default function Slug({ params }) {
+export default function Page() {
 
   const [chatMessages, setChatMessages] = useState([]);
   const [sendMessages, setSendMessages] = useState([]);
   const [text, setText] = useState("");
 
-  // const {socket} = useSelector((state) = state.app);
+  const { selectedUser } = useSelector((state) => state.app);
 
   const pressEnter = (e) => {
     if (e.key === "Enter") {
@@ -21,22 +21,11 @@ export default function Slug({ params }) {
     }
   }
 
-  // const handleOnClick = () => {
-  //   let contectId = params.slug[0];
-  //   socket.emit('send', { text, contectId });
-  //   setSendMessages(prevMessage => [...prevMessage, text])
-  //   setText("");
-  // }
+  const handleOnClick = () => {
+    // setSendMessages(text);
+    console.log(text);
+  }
 
-  // useEffect(() => {
-
-  //   // socket.on('recieve', (message) => {
-  //   //   setChatMessages(prevMessage => [...prevMessage, message])
-  //   // });
-
-  //   // socket.emit("joinChat", params.slug[0]);
-
-  // }, [socket, setChatMessages, params])
 
   return (
     <section className=" w-full h-screen">

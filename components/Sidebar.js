@@ -1,26 +1,42 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import Chat from "./Chat"
 import SidebarHeader from "./SidebarHeader"
 import AddChatModal from "./AddChatModal"
 import { FaSearch } from "react-icons/fa"
-import { useGetContectsQuery } from "@/redux/features/chatApi";
+import instance from "@/utils/axiosConfig";
 
 
 const Sidebar = () => {
+
   const [search, setSearch] = useState("");
   const [modalOpen, setModalOpen] = useState(false)
-  const [contects, setContects] = useState([])
+  const [chats, setChats] = useState([]);
 
+  useEffect(() => {
+    const fetchChat = async () => {
+      try {
+        const res = await instance.get("/api/v1/chat/fetchchats")
+        if (res.data.success) {
+          setChats(chats.concat(res.data.data.chats));
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    fetchChat();
+  }, [])
 
   const handleClose = () => {
     setModalOpen(false);
   }
 
-
   const handleOnChange = (e) => {
     setSearch(e.target.value);
   }
+
   return (
     <section className=" p-2 h-screen border-r-2 border-secoundry" >
 
@@ -39,13 +55,13 @@ const Sidebar = () => {
       </section>
 
       <section>
-        <button type="button" onClick={()=>setModalOpen(true)} className="w-full hover:bg-secoundry my-1 py-1">Start A New Chat</button>
-        {modalOpen && <AddChatModal  handleClose={handleClose} setModalOpen={setModalOpen} />}
+        <button type="button" onClick={() => setModalOpen(true)} className="w-full hover:bg-secoundry my-1 py-1">Start A New Chat</button>
+        {modalOpen && <AddChatModal handleClose={handleClose} setModalOpen={setModalOpen} setChats={setChats} chats={chats} />}
       </section>
 
       <section className="h-[78%] overflow-hidden overflow-y-auto">
-        {contects?.map((user, i) => {
-          return <Chat key={i} />
+        {chats?.map((chat, i) => {
+          return <Chat key={i} chat={chat} />
         })}
       </section>
     </section>

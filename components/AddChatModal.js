@@ -8,7 +8,8 @@ import { IoClose } from "react-icons/io5";
 import Select from 'react-select';
 
 
-const AddChatModal = ({ handleClose, setModalOpen}) => {
+const AddChatModal = ({ handleClose, setModalOpen, setChats, chats }) => {
+
   const [options, setOptions] = useState([]);
   const [list, setList] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -16,7 +17,6 @@ const AddChatModal = ({ handleClose, setModalOpen}) => {
   useEffect(() => {
     searchData();
   }, [])
-
 
   const searchData = async () => {
     const res = await instance.get("/api/v1/chat/search");
@@ -29,7 +29,8 @@ const AddChatModal = ({ handleClose, setModalOpen}) => {
           label: dataArray[x].username,
           id: dataArray[x]._id,
           username: dataArray[x].username,
-          email: dataArray[x].email
+          email: dataArray[x].email,
+          avatar: dataArray[x].avatar
         }
         tempArray.push(object)
       }
@@ -37,11 +38,16 @@ const AddChatModal = ({ handleClose, setModalOpen}) => {
     }
   }
 
-  const handleOnSubmit = async  () => {
-    const response = await instance.post(`/api/v1/chat/createonetoonechat/${selectedOption.id}`);
-    if(response.data.success){
-      successToast(response);
-      setModalOpen(false);
+  const handleOnSubmit = async () => {
+    try {
+      const response = await instance.post(`/api/v1/chat/createonetoonechat/${selectedOption.id}`);
+      if (response.data.success) {
+        successToast(response);
+        setChats(chats.concat(response.data.data.receiver));
+        setModalOpen(false);
+      }
+    } catch(error) {
+      errorToast(error);
     }
   }
 
@@ -53,7 +59,7 @@ const AddChatModal = ({ handleClose, setModalOpen}) => {
     <section className=" backdrop-blur-sm fixed top-0 left-0 right-0 bottom-0">
       <section className="-translate-x-[50%] -translate-y-[50%] fixed top-[20%] left-[50%] md:w-[40%] w-full h-[30%] rounded-lg bg-secoundry p-3">
         <IoClose size={30} className="absolute top-2 right-2 cursor-pointer hover:bg-primary" onClick={handleClose} />
-        <h3 className="text-xl text-center mb-3 p-2 font-bold" >Add A New Chat</h3>
+        <h3 className="text-xl text-center mb-3 p-2 font-bold" >Create New Chat</h3>
         <div className="flex flex-col gap-6">
 
           <div className="text-secoundry">

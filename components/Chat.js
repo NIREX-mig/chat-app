@@ -1,24 +1,30 @@
 "use client";
-import { useRouter } from "next/navigation";
-import { RxAvatar } from "react-icons/rx"
 
-const Chat = ({ user }) => {
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { useDispatch } from "react-redux";
+import { setSelectedUser } from "@/redux/features/appSlice";
+
+const Chat = ({ chat }) => {
 
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const handleOnClick = () => {
-    router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/chat/${user.participants[1]}`)
+    router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/chat`)
+    dispatch(setSelectedUser(chat));
   }
+
   return (
-    <section className=" w-full flex items-center justify-around hover:bg-secoundry " onClick={handleOnClick}>
+    <section className=" w-full flex items-center justify-between hover:bg-secoundry " onClick={handleOnClick}>
       <div className="flex items-center gap-5 truncate my-1 p-2 ">
-        <RxAvatar size={40} />
+        <Image src={chat.receiver?.avatar || chat.avatar} alt="profile_pic" width={30} height={30} className="rounded-full" />
         <h3 className="cursor-default">
-          {user?.name}
-        </h3>
+          {chat.receiver?.username || chat.username}
+        </h3> 
       </div>
       <div>
-        <p className="cursor-default bg-green-400/15 text-sm text-green-500 px-2 rounded-full">1</p>
+        <p className="cursor-default bg-green-400/15 text-sm text-green-500 px-2 rounded-full mr-5">1</p>
       </div>
     </section>
   )

@@ -1,22 +1,24 @@
 'use client';
 
-import { FiMoreVertical } from "react-icons/fi";
-import { RxAvatar } from "react-icons/rx";
+import { useSelector } from "react-redux";
+import Image from "next/image";
 
 const Header = () => {
+  
+  const {selectedUser} = useSelector((state) => state.app);
+
   return (
     <section className=" my-1 p-2 pb-2 border-b-2 border-secoundry">
       <div className="flex justify-between items-center">
         <div className="flex gap-3">
-          <RxAvatar size={40} />
+          <Image src={selectedUser.receiver?.avatar || selectedUser?.avatar} width={45} height={45} alt="profile" className="rounded-full" />
           <div>
             <p className="cursor-default">
-              akay@gmail.com
+              {selectedUser.receiver?.email || selectedUser?.email}
             </p>
             <p className="text-sm cursor-default">Last active</p>
           </div>
       </div>
-          <FiMoreVertical size={20} />
         </div>
     </section>
   )
