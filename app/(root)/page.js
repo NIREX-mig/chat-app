@@ -16,22 +16,20 @@ export default function Home() {
       try {
         const refershToken = typeof window !== "undefined" ? localStorage.getItem("refershToken") : null;
         const res = await instance.post("/api/v1/auth/refershtoken",{refershToken});
-        if (res.data.success) {
-          successToast(res);
-        }
       } catch (error) {
         errorToast(error);
+        router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/login`);
         localStorage.removeItem("refershToken");
         localStorage.removeItem("user");
-        router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/login`);
       }
     }
     checkLogin();
-  }, [])
+  }, [router])
 
   return (
-    <section className=" w-full h-screen">
-      <p className="text-wrap p-2">hello </p>
+    <section className=" w-full h-screen flex flex-col justify-center items-center">
+      <p className="text-4xl">No Chats Found?</p>
+      <p className="text-lg">please select a chat</p>
     </section>
   );
 }

@@ -1,8 +1,12 @@
 "use client";
+
 const { createSlice } = require("@reduxjs/toolkit");
 
 const initialState = {
-    selectedUser : {}
+    selectedUser : {},
+    sendMessage : [],
+    receivedMessage : [],
+    
 }
 
 const appSlice = createSlice({
@@ -12,11 +16,19 @@ const appSlice = createSlice({
         setSelectedUser : (state, action ) => {
             state.selectedUser = action.payload;
         },
+        
+        setSendMessage : (state, action ) =>{
+            state.sendMessage.push(action.payload);
+        },
+
+        setReceivedMessage : (state, action ) => {
+            state.receivedMessage.concat(action.payload);
+        }
 
 
     }
 });
 
-export const {setSelectedUser} = appSlice.actions;
+export const {setSelectedUser, setReceivedMessage, setSendMessage} = appSlice.actions;
 
 export default appSlice.reducer;

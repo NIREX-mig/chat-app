@@ -25,9 +25,8 @@ const Sidebar = () => {
         console.log(error)
       }
     }
-
     fetchChat();
-  }, [])
+  }, [setChats])
 
   const handleClose = () => {
     setModalOpen(false);
