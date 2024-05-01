@@ -16,7 +16,7 @@ const AddChatModal = ({ handleClose, setModalOpen, setChats, chats }) => {
 
   useEffect(() => {
     searchData();
-  }, [])
+  }, [setChats])
 
   const searchData = async () => {
     const res = await instance.get("/api/v1/chat/search");
@@ -43,7 +43,7 @@ const AddChatModal = ({ handleClose, setModalOpen, setChats, chats }) => {
       const response = await instance.post(`/api/v1/chat/createonetoonechat/${selectedOption.id}`);
       if (response.data.success) {
         successToast(response);
-        setChats(chats.concat(response.data.data.receiver));
+        setChats(chats.concat(response.data.data));
         setModalOpen(false);
       }
     } catch(error) {

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useEffect, useState} from "react"
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { validation } from "@/utils/loginvalidator";
@@ -17,6 +17,16 @@ export default function Login() {
   const [disabled, setDisabled] = useState(false);
   const [errors, setErrors] = useState({});
   const router = useRouter();
+
+
+  useEffect(() =>{
+    let isLogedin = localStorage.getItem("refershToken");
+    if(isLogedin) {
+      router.push(`${process.env.NEXT_PUBLIC_BASE_URL}`);
+    } else{
+      router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/login`);
+    }
+  })
 
 
   const handleOnSubmit = async (e) => {
@@ -40,13 +50,10 @@ export default function Login() {
           localStorage.setItem("refershToken", response.data.data.refershToken);
           const user = JSON.stringify(response.data.data.user)
           localStorage.setItem("user", user);
-          
           successToast(response)
           setFormData({ email: "", password: "" });
           setDisabled(false);
-          setTimeout(() => {
-            router.push(`${process.env.NEXT_PUBLIC_BASE_URL}`);
-          }, 500);
+          router.push(`${process.env.NEXT_PUBLIC_BASE_URL}`);
         }
       } catch (error) {
         setDisabled(false)

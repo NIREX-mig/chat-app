@@ -21,13 +21,13 @@ export default function Signup() {
   const [errors, setErrors] = useState({});
   const router = useRouter();
 
-  useEffect(() => {
-    const isAuthenticated =
-      typeof window !== "undefined" ? localStorage.getItem("refershToken") : null;
-    if (isAuthenticated) {
-      router.push(`${process.env.NEXT_PUBLIC_BASE_URL}`);
-    }
-  }, [router]);
+  // useEffect(() => {
+  //   const isAuthenticated =
+  //     typeof window !== "undefined" ? localStorage.getItem("refershToken") : null;
+  //   if (isAuthenticated) {
+  //     router.push(`${process.env.NEXT_PUBLIC_BASE_URL}`);
+  //   }
+  // }, [router]);
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();

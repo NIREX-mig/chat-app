@@ -11,20 +11,22 @@ export default function Home() {
 
   const router = useRouter();
 
-  useEffect(() => {
-    const checkLogin = async () => {
-      try {
-        const refershToken = typeof window !== "undefined" ? localStorage.getItem("refershToken") : null;
-        const res = await instance.post("/api/v1/auth/refershtoken",{refershToken});
-      } catch (error) {
-        errorToast(error);
-        router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/login`);
-        localStorage.removeItem("refershToken");
-        localStorage.removeItem("user");
-      }
-    }
-    checkLogin();
-  }, [router])
+  // useEffect(() => {
+  //   const checkLogin = async () => {
+  //     try {
+  //       let refershToken = localStorage.getItem("refershToken");
+  //       const res = await instance.post("/api/v1/auth/refershtoken", { refershToken });
+  //     } catch (error) {
+  //       errorToast(error);
+  //       setTimeout(() => {
+  //         router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/login`);
+  //         localStorage.removeItem("refershToken");
+  //         localStorage.removeItem("user");
+  //       }, 800);
+  //     }
+  //   }
+  //   checkLogin();
+  // }, [router])
 
   return (
     <section className=" w-full h-screen flex flex-col justify-center items-center">

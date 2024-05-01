@@ -5,28 +5,27 @@ import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { setSelectedUser } from "@/redux/features/appSlice";
 import socket from "@/socket";
-import { successToast } from "@/utils/toastshow";
 
 const Chat = ({ chat }) => {
 
   const router = useRouter();
   const dispatch = useDispatch();
+  const src = chat.receiver?.avatar
 
   const handleOnClick = () => {
     router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/chat`)
     dispatch(setSelectedUser(chat));
-    console.log(chat);
-    const username = chat.username;
-    socket.connect();
-    socket.auth = { username };
-    const chatId= chat._id;
-    socket.emit("join_chat",chatId);
+    // const username = chat.username;
+    // socket.connect();
+    // socket.auth = { username };
+    // const chatId= chat._id;
+    // socket.emit("join_chat",chatId);
   }
 
   return (
     <section className=" w-full flex items-center justify-between hover:bg-secoundry " onClick={handleOnClick}>
       <div className="flex items-center gap-5 truncate my-1 p-2 ">
-        <Image src={chat.receiver?.avatar || chat.avatar} alt="profile_pic" width={30} height={30} className="rounded-full" />
+        <Image src={src} alt="profile_pic" width={30} height={30} className="rounded-full" />
         <h3 className="cursor-default">
           {chat.receiver?.username || chat.username}
         </h3>
