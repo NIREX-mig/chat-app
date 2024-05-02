@@ -28,7 +28,7 @@ const SidebarHeader = () => {
     // }
 
     const user = JSON.parse(localStorage.getItem("user"));
-    setUserAvatar(user.avatar);
+    setUserAvatar(user?.avatar);
   }, [router, modal]);
 
   const handleLogOut = async () => {
@@ -58,7 +58,7 @@ const SidebarHeader = () => {
 
   return (
     <section className="flex justify-between items-center border-b-2 border-secoundry py-2 pb-4">
-      <Image src={userAvatar} alt="profilePic" width={25} height={25} className="rounded-full" onClick={handleOnClick} />
+      <Image src={userAvatar} alt="profilePic" width={32} height={32} className="rounded-full" onClick={handleOnClick} />
       {modal && <section className="absolute left-7 top-14 p-5 rounded-xl bg-secoundry border-gray-700 border">
         <div className=" py-3 px-4 flex items-center gap-3 cursor-pointer hover:bg-primary" onClick={handleManageProfile}>
           <CgProfile size={25} />

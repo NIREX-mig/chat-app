@@ -45,7 +45,8 @@ const AddChatModal = ({ handleClose, setModalOpen, setChats, chats }) => {
       const response = await instance.post(`/api/v1/chat/createonetoonechat/${selectedOption.id}`);
       if (response.data.success) {
         successToast(response);
-        setChats(chats.concat(response.data.data));
+        const newChat = response.data.data;
+        setChats([newChat, ...chats]);
         setModalOpen(false);
       }
     } catch (error) {

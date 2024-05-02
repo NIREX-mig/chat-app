@@ -2,7 +2,7 @@
 
 import instance from "@/utils/axiosConfig";
 import { errorToast, successToast } from "@/utils/toastshow";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 
@@ -10,9 +10,11 @@ import { useEffect } from "react";
 export default function Home() {
 
   const router = useRouter();
+  const pathname = usePathname();
 
   // useEffect(() => {
-  //   checkAuthentication();
+  //   // checkAuthentication();
+
   // }, [router])
 
   // const checkAuthentication = async () => {
@@ -30,7 +32,7 @@ export default function Home() {
   // }
 
   return (
-    <section className=" w-full h-screen flex flex-col justify-center items-center">
+    <section className={`w-full h-screen flex flex-col justify-center items-center ${pathname === "/" && "hidden md:flex"}`}>
       <p className="text-4xl">No Chats Found?</p>
       <p className="text-lg">please select a chat</p>
     </section>

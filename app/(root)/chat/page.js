@@ -8,19 +8,21 @@ import socket from "@/socket";
 import { pushNewMessage, setAllMessages } from "@/redux/features/appSlice";
 import instance from "@/utils/axiosConfig";
 import { errorToast, messageToast } from "@/utils/toastshow";
-import ScrollableMessages from "@/components/ScrollableMessages";
+import ScrollableContainer from "@/components/ScrollableContainer";
 
 
-export default function Page() {
+export default function Chat() {
 
   const { allMessages, selectedUser } = useSelector((state) => state.app);
 
   const [text, setText] = useState("");
+  const [SelectedUser, setSelectedUser]= useState(null)
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     fetchMessages();
+    setSelectedUser(JSON.parse(localStorage.getItem("selectedUser")));
   }, [selectedUser]);
 
   const pressEnter = (e) => {
@@ -33,7 +35,9 @@ export default function Page() {
   const handleOnClick = async () => {
     try {
       setText("");
-      const res = await instance.post(`/api/v1/message/${selectedUser?._id}`, { message: text });
+      let localSelectedUser = JSON.parse(localStorage.getItem("selectedUser"));
+
+      const res = await instance.post(`/api/v1/message/${localSelectedUser?._id}`, { message: text });
       dispatch(pushNewMessage(res.data.data));
     } catch (error) {
       errorToast(error);
@@ -41,12 +45,13 @@ export default function Page() {
   }
 
   const fetchMessages = async () => {
-    if (!selectedUser) {
+    let localSelectedUser = JSON.parse(localStorage.getItem("selectedUser"));
+    if (!localSelectedUser) {
       messageToast("Something Went Wrong!")
       return
     }
     try {
-      const res = await instance.get(`/api/v1/message/${selectedUser?._id}`);
+      const res = await instance.get(`/api/v1/message/${localSelectedUser?._id}`);
       dispatch(setAllMessages(res.data.data));
     } catch (error) {
       errorToast(error);
@@ -57,15 +62,16 @@ export default function Page() {
   return (
     <section className=" w-full h-screen">
       <Header />
-      <div className="p-2 w-full h-[calc(100%-150px)] overflow-y-auto ">
-        {/* <ScrollableMessages allMessages={allMessages} /> */}
-        {allMessages.map((msg, i) => {
-          return <articl key={i} className={`my-1 m:max-w-[40%] max-w-[40%] px-2 rounded-lg text-wrap ${msg.sender._id == selectedUser?.participants._id ? "float-left bg-green-400  text-black" : "float-right bg-blue-200 text-black"} clear-both`}>
-          {/* return <articl key={i} className="bg-secoundry my-1 md:w-[30%] w-[40%] px-2 rounded-lg text-wrap float-right clear-both "> */}
-            <p className="text-wrap p-2">{msg.message}</p>
-          </articl>
-        })}
-      </div>
+      <section className=" md:w-full h-[calc(100%-150px)] overflow-y-auto ">
+        <ScrollableContainer>
+          {allMessages.map((msg, i) => {
+            return <articl key={i} className={`my-1 m:max-w-[40%] max-w-[40%] px-2 rounded-lg text-wrap ${msg.sender._id == SelectedUser?.participants?._id ? "float-left bg-green-300 text-black" : "float-right bg-blue-300 text-black"} clear-both`}>
+              <p className="text-wrap p-2">{msg.message}</p>
+            </articl>
+          })}
+        </ScrollableContainer>
+
+      </section>
 
       <ChatFoter text={text} setText={setText} pressEnter={pressEnter} handleOnClick={handleOnClick} />
     </section>

@@ -6,6 +6,7 @@ import SidebarHeader from "./SidebarHeader"
 import AddChatModal from "./AddChatModal"
 import { FaSearch } from "react-icons/fa"
 import instance from "@/utils/axiosConfig";
+import { usePathname } from "next/navigation";
 
 
 const Sidebar = () => {
@@ -13,6 +14,7 @@ const Sidebar = () => {
   const [search, setSearch] = useState("");
   const [modalOpen, setModalOpen] = useState(false)
   const [chats, setChats] = useState([]);
+  const pathname = usePathname();
 
   useEffect(() => {
     getChats();
@@ -38,7 +40,7 @@ const Sidebar = () => {
   }
 
   return (
-    <section className=" p-2 h-screen border-r-2 border-secoundry" >
+    <section className={`p-2 h-screen border-r-2 border-secoundry ${pathname === "/chat" && "hidden md:block"} `}  >
 
       <SidebarHeader />
 
