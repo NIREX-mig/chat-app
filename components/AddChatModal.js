@@ -1,8 +1,7 @@
 "use client";
 
 import instance from "@/utils/axiosConfig";
-import { errorToast, successToast } from "@/utils/toastshow";
-import Link from "next/link";
+import { errorToast, messageToast, successToast } from "@/utils/toastshow";
 import { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import Select from 'react-select';
@@ -11,14 +10,13 @@ import Select from 'react-select';
 const AddChatModal = ({ handleClose, setModalOpen, setChats, chats }) => {
 
   const [options, setOptions] = useState([]);
-  const [list, setList] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
 
   useEffect(() => {
-    searchData();
-  }, [setChats])
+    getOptions();
+  }, [])
 
-  const searchData = async () => {
+  const getOptions = async () => {
     const res = await instance.get("/api/v1/chat/search");
     if (res.data.success) {
       const dataArray = res.data.data;
@@ -39,6 +37,10 @@ const AddChatModal = ({ handleClose, setModalOpen, setChats, chats }) => {
   }
 
   const handleOnSubmit = async () => {
+    if(!selectedOption){
+      messageToast("Please Select A Chat")
+      return
+    }
     try {
       const response = await instance.post(`/api/v1/chat/createonetoonechat/${selectedOption.id}`);
       if (response.data.success) {
@@ -46,7 +48,7 @@ const AddChatModal = ({ handleClose, setModalOpen, setChats, chats }) => {
         setChats(chats.concat(response.data.data));
         setModalOpen(false);
       }
-    } catch(error) {
+    } catch (error) {
       errorToast(error);
     }
   }

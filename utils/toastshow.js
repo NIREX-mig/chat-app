@@ -24,8 +24,20 @@ const errorToast = (error) => {
         theme: "dark",
       });
 }
+const messageToast = (message) => {
+    return toast.error(message, {
+        position: "top-center",
+        autoClose: 800,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      });
+}
 
 export {
     successToast,
-    errorToast
+    errorToast,
+    messageToast,
 }

@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { validation } from "@/utils/loginvalidator";
 import instance from "@/utils/axiosConfig";
 import { errorToast, successToast } from "@/utils/toastshow";
+import { useDispatch } from "react-redux";
+import { setLogedinUser } from "@/redux/features/appSlice";
 
 export default function Login() {
 
@@ -17,16 +19,17 @@ export default function Login() {
   const [disabled, setDisabled] = useState(false);
   const [errors, setErrors] = useState({});
   const router = useRouter();
+  const dispatch = useDispatch();
+
+
 
 
   useEffect(() =>{
     let isLogedin = localStorage.getItem("refershToken");
     if(isLogedin) {
       router.push(`${process.env.NEXT_PUBLIC_BASE_URL}`);
-    } else{
-      router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/login`);
     }
-  })
+  },[router]);
 
 
   const handleOnSubmit = async (e) => {
@@ -49,7 +52,7 @@ export default function Login() {
         if (response.data.success) {
           localStorage.setItem("refershToken", response.data.data.refershToken);
           const user = JSON.stringify(response.data.data.user)
-          localStorage.setItem("user", user);
+          localStorage.setItem("user", user)
           successToast(response)
           setFormData({ email: "", password: "" });
           setDisabled(false);

@@ -11,10 +11,10 @@ const Header = () => {
     <section className=" my-1 p-2 pb-2 border-b-2 border-secoundry">
       <div className="flex justify-between items-center">
         <div className="flex gap-3">
-          <Image src={selectedUser.receiver?.avatar || selectedUser?.avatar} width={45} height={45} alt="profile" className="rounded-full" />
+          <Image src={selectedUser?.participants?.avatar} width={45} height={45} alt="profile" className="rounded-full" />
           <div>
             <p className="cursor-default">
-              {selectedUser.receiver?.email || selectedUser?.email}
+              {selectedUser?.participants?.email}
             </p>
             <p className="text-sm cursor-default">Last active</p>
           </div>

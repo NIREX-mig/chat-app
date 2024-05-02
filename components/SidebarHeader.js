@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import instance from "@/utils/axiosConfig";
 import { errorToast, successToast } from "@/utils/toastshow";
 import Image from "next/image";
+import { useSelector } from "react-redux";
 
 
 const SidebarHeader = () => {
@@ -15,6 +16,8 @@ const SidebarHeader = () => {
   const [userAvatar, setUserAvatar] = useState("");
 
   const router = useRouter();
+
+  const {logedinUser} = useSelector((state) => state.app);
 
 
   useEffect(() => {
@@ -25,7 +28,7 @@ const SidebarHeader = () => {
     // }
 
     const user = JSON.parse(localStorage.getItem("user"));
-    setUserAvatar(user?.avatar);
+    setUserAvatar(user.avatar);
   }, [router, modal]);
 
   const handleLogOut = async () => {

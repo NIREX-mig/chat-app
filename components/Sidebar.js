@@ -15,18 +15,8 @@ const Sidebar = () => {
   const [chats, setChats] = useState([]);
 
   useEffect(() => {
-    const fetchChat = async () => {
-      try {
-        const res = await instance.get("/api/v1/chat/fetchchats")
-        if (res.data.success) {
-          setChats(chats.concat(res.data.data.chats));
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    fetchChat();
-  }, [setChats])
+    getChats();
+  }, [])
 
   const handleClose = () => {
     setModalOpen(false);
@@ -34,6 +24,17 @@ const Sidebar = () => {
 
   const handleOnChange = (e) => {
     setSearch(e.target.value);
+  }
+
+  const getChats = async () => {
+    try {
+      const res = await instance.get("/api/v1/chat/fetchchats")
+      if (res.data.success) {
+        setChats(chats.concat(res.data.data));
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
