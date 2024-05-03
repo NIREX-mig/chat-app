@@ -6,7 +6,9 @@ import SidebarHeader from "./SidebarHeader"
 import AddChatModal from "./AddChatModal"
 import { FaSearch } from "react-icons/fa"
 import instance from "@/utils/axiosConfig";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { checkAuthentication } from "@/utils/auth";
+
 
 
 const Sidebar = () => {
@@ -15,6 +17,8 @@ const Sidebar = () => {
   const [modalOpen, setModalOpen] = useState(false)
   const [chats, setChats] = useState([]);
   const pathname = usePathname();
+  const router = useRouter();
+
 
   useEffect(() => {
     getChats();
@@ -27,6 +31,8 @@ const Sidebar = () => {
   const handleOnChange = (e) => {
     setSearch(e.target.value);
   }
+
+  
 
   const getChats = async () => {
     try {

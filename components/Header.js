@@ -15,7 +15,7 @@ const Header = () => {
 
   useEffect(() => {
     setSelectedUser(JSON.parse(localStorage.getItem("selectedUser")));
-  }, [selectedUser]);
+  }, [selectedUser,setSelectedUser]);
 
   const handleBackButton = () =>{
     router.back();

@@ -1,35 +1,20 @@
 "use client";
 
-import instance from "@/utils/axiosConfig";
-import { errorToast, successToast } from "@/utils/toastshow";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 
-
 export default function Home() {
-
-  const router = useRouter();
+  
   const pathname = usePathname();
+  const router = useRouter();
 
-  // useEffect(() => {
-  //   // checkAuthentication();
-
-  // }, [router])
-
-  // const checkAuthentication = async () => {
-  //   try {
-  //     let refershToken = localStorage.getItem("refershToken");
-  //     const res = await instance.post("/api/v1/auth/refershtoken", { refershToken });
-  //   } catch (error) {
-  //     errorToast(error);
-  //     setTimeout(() => {
-  //       router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/login`);
-  //       // localStorage.removeItem("refershToken");
-  //       // localStorage.removeItem("user");
-  //     }, 800);
-  //   }
-  // }
+  useEffect(()=>{
+    // let isLogedin = localStorage.getItem("refershToken");
+    // if(!isLogedin) {
+    //   router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/login`);
+    // }
+  },[router])
 
   return (
     <section className={`w-full h-screen flex flex-col justify-center items-center ${pathname === "/" && "hidden md:flex"}`}>

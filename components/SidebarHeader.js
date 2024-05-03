@@ -17,7 +17,7 @@ const SidebarHeader = () => {
 
   const router = useRouter();
 
-  const {logedinUser} = useSelector((state) => state.app);
+  const { logedinUser } = useSelector((state) => state.app);
 
 
   useEffect(() => {
@@ -29,19 +29,17 @@ const SidebarHeader = () => {
 
     const user = JSON.parse(localStorage.getItem("user"));
     setUserAvatar(user?.avatar);
-  }, [router, modal]);
+  }, [setUserAvatar]);
 
   const handleLogOut = async () => {
     try {
+      localStorage.removeItem('refershToken');
+      localStorage.removeItem('user');
+      router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/login`);
       const response = await instance.post('/api/v1/auth/logout');
       if (response.data.success) {
+        setModal(false);
         successToast(response)
-        setTimeout(() => {
-          localStorage.removeItem('refershToken');
-          localStorage.removeItem('user');
-          router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/login`); 
-          setModal(false);
-        }, 500);
       }
     } catch (error) {
       setModal(false);

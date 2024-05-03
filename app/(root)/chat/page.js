@@ -23,7 +23,7 @@ export default function Chat() {
   useEffect(() => {
     fetchMessages();
     setSelectedUser(JSON.parse(localStorage.getItem("selectedUser")));
-  }, [selectedUser]);
+  }, [selectedUser,,setSelectedUser]);
 
   const pressEnter = (e) => {
     if (e.key === "Enter") {

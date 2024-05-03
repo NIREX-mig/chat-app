@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 const ScrollableContainer = ({ children }) => {
     const containerRef = useRef(null);

@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { validation } from "@/utils/authvalidator";
-import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import instance from "@/utils/axiosConfig";
 import { errorToast, successToast } from "@/utils/toastshow";
@@ -21,13 +20,13 @@ export default function Signup() {
   const [errors, setErrors] = useState({});
   const router = useRouter();
 
-  // useEffect(() => {
-  //   const isAuthenticated =
-  //     typeof window !== "undefined" ? localStorage.getItem("refershToken") : null;
-  //   if (isAuthenticated) {
-  //     router.push(`${process.env.NEXT_PUBLIC_BASE_URL}`);
-  //   }
-  // }, [router]);
+  useEffect(() => {
+    const isAuthenticated =
+      typeof window !== "undefined" ? localStorage.getItem("refershToken") : null;
+    if (isAuthenticated) {
+      router.push(`${process.env.NEXT_PUBLIC_BASE_URL}`);
+    }
+  }, [router]);
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
