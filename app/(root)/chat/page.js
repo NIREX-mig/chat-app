@@ -65,9 +65,9 @@ export default function Chat() {
       <section className=" md:w-full h-[calc(100%-150px)] overflow-y-auto ">
         <ScrollableContainer>
           {allMessages.map((msg, i) => {
-            return <articl key={i} className={`my-1 m:max-w-[40%] max-w-[40%] px-2 rounded-lg text-wrap ${msg.sender._id == SelectedUser?.participants?._id ? "float-left bg-green-300 text-black" : "float-right bg-blue-300 text-black"} clear-both`}>
+            return <article key={i} className={`my-1 m:max-w-[40%] max-w-[40%] px-2 rounded-lg text-wrap ${msg.sender._id == SelectedUser?.participants?._id ? "float-left bg-green-300 text-black" : "float-right bg-blue-300 text-black"} clear-both`}>
               <p className="text-wrap p-2">{msg.message}</p>
-            </articl>
+            </article>
           })}
         </ScrollableContainer>
 

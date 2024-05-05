@@ -7,6 +7,7 @@ import { validation } from "@/utils/authvalidator";
 import 'react-toastify/dist/ReactToastify.css';
 import instance from "@/utils/axiosConfig";
 import { errorToast, successToast } from "@/utils/toastshow";
+import Loader from "@/components/ui/Loader";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ export default function Signup() {
   const [disabled, setDisabled] = useState(false);
   const [errors, setErrors] = useState({});
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const isAuthenticated =
@@ -30,20 +32,19 @@ export default function Signup() {
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    setDisabled(true);
     if (formData.cpassword !== formData.password) {
       setDisabled(false);
       return setErrors({ ...errors, cpassword: 'Confirm password dose not match' })
     }
-    setDisabled(false)
     const validate = validation(formData);
     setErrors(validate);
-    console.log(validate)
     if (validate.success) {
       try {
         setDisabled(true)
+        setLoading(true);
         const response = await instance.post("/api/v1/auth/signup", { email: formData.email, username: formData.username, password: formData.password });
         setDisabled(false);
+        setLoading(false);
         if (response.data.success) {
           successToast(response)
           setFormData({ email: "", password: "", username: "", cpassword: "" })
@@ -52,7 +53,7 @@ export default function Signup() {
         }
       } catch (error) {
         setDisabled(false);
-        console.log(error)
+        setLoading(false);
         errorToast(error)
       }
 
@@ -136,7 +137,9 @@ export default function Signup() {
               />
             </div>
             {errors.cpassword && <span className="text-red-600">{errors.cpassword}</span>}
-            <button type="submit" className="bg-blue-800 py-2 w-full px-7 text-xl rounded-lg my-3 focus:ring-2 focus:ring-blue-700 hover:bg-blue-900 font-bold disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed" disabled={disabled} >Sign up</button>
+            <button type="submit" className="bg-blue-800 py-2 w-full px-7 text-xl rounded-lg my-3 focus:ring-2 focus:ring-blue-700 hover:bg-blue-900 font-bold disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed" disabled={disabled} >
+              {loading ? <Loader/> : "Sign up"}
+              </button>
           </form>
           <p className="flex text-sm font-light ">
             login with account?

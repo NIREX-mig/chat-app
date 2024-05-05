@@ -2,7 +2,6 @@
 
 import { cookies } from "next/headers";
 
-
 export const checkAuthentication = async () => {
     const cookieStore = cookies()
     let token = cookieStore.get("refershToken");

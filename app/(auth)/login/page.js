@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState} from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { validation } from "@/utils/loginvalidator";
@@ -8,6 +8,7 @@ import instance from "@/utils/axiosConfig";
 import { errorToast, successToast } from "@/utils/toastshow";
 import { useDispatch } from "react-redux";
 import { setLogedinUser } from "@/redux/features/appSlice";
+import Loader from "@/components/ui/Loader"
 
 export default function Login() {
 
@@ -18,25 +19,23 @@ export default function Login() {
 
   const [disabled, setDisabled] = useState(false);
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
 
 
 
 
-  useEffect(() =>{
+  useEffect(() => {
     let isLogedin = localStorage.getItem("refershToken");
-    if(isLogedin) {
+    if (isLogedin) {
       router.push(`${process.env.NEXT_PUBLIC_BASE_URL}`);
     }
-  },[router]);
+  }, [router]);
 
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-
-    setDisabled(false);
-
     const validate = validation(formData);
     setErrors(validate);
 
@@ -44,10 +43,13 @@ export default function Login() {
 
       try {
         setDisabled(true);
+        setLoading(true)
+
 
         const response = await instance.post("/api/v1/auth/login", { email: formData.email, password: formData.password });
 
         setDisabled(false);
+        setLoading(false);
 
         if (response.data.success) {
           localStorage.setItem("refershToken", response.data.data.refershToken);
@@ -60,6 +62,7 @@ export default function Login() {
         }
       } catch (error) {
         setDisabled(false)
+        setLoading(false)
         console.log(error)
         errorToast(error)
       }
@@ -121,7 +124,9 @@ export default function Login() {
                 Forgot password?
               </Link>
             </div>
-            <button type="submit" className="bg-blue-800 py-2 w-full px-7 text-xl rounded-lg my-3 focus:ring-2 focus:ring-blue-700 hover:bg-blue-900 font-bold disabled:bg-gray-700 disabled:text-gray-400 disabled:cursor-not-allowed" disabled={disabled} >Log in</button>
+            <button type="submit" className="bg-blue-800 py-2 w-full px-7 text-xl rounded-lg my-3 focus:ring-2 focus:ring-blue-700 hover:bg-blue-900 font-bold disabled:bg-gray-700 disabled:text-gray-400 disabled:cursor-not-allowed" disabled={disabled} >
+              {loading ? <Loader /> : "Login"}
+            </button>
           </form>
           <p className="flex text-sm font-light">
             Don&apos;t have an account yet?{" "}

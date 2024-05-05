@@ -15,11 +15,13 @@ const Chat = ({ chat }) => {
     router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/chat`)
     dispatch(setSelectedUser(chat))
     localStorage.setItem("selectedUser",JSON.stringify(chat));
+
     // const username = chat.username;
     // socket.connect();
     // socket.auth = { username };
     // const chatId= chat._id;
     // socket.emit("join_chat",chatId);
+    
   }
 
   return (

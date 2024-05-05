@@ -17,30 +17,35 @@ const AddChatModal = ({ handleClose, setModalOpen, setChats, chats }) => {
   }, [])
 
   const getOptions = async () => {
-    const res = await instance.get("/api/v1/chat/search");
-    if (res.data.success) {
-      const dataArray = res.data.data;
-      let tempArray = [];
-      for (let x in dataArray) {
-        let object = {
-          value: dataArray[x].username,
-          label: dataArray[x].username,
-          id: dataArray[x]._id,
-          username: dataArray[x].username,
-          email: dataArray[x].email,
-          avatar: dataArray[x].avatar
+    try {
+      const res = await instance.get("/api/v1/chat/search");
+      if (res.data.success) {
+        const dataArray = res.data.data;
+        let tempArray = [];
+        for (let x in dataArray) {
+          let object = {
+            value: dataArray[x].username,
+            label: dataArray[x].username,
+            id: dataArray[x]._id,
+            username: dataArray[x].username,
+            email: dataArray[x].email,
+            avatar: dataArray[x].avatar
+          }
+          tempArray.push(object)
         }
-        tempArray.push(object)
+        setOptions(options.concat(tempArray))
       }
-      setOptions(options.concat(tempArray))
+    } catch (error) {
+      errorToast(error);
     }
   }
 
   const handleOnSubmit = async () => {
-    if(!selectedOption){
+    if (!selectedOption) {
       messageToast("Please Select A Chat")
       return
     }
+
     try {
       const response = await instance.post(`/api/v1/chat/createonetoonechat/${selectedOption.id}`);
       if (response.data.success) {

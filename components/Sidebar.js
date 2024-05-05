@@ -32,9 +32,12 @@ const Sidebar = () => {
     setSearch(e.target.value);
   }
 
-  
-
   const getChats = async () => {
+    const token = localStorage.getItem("refershToken")
+    if (!token) {
+      return
+    }
+
     try {
       const res = await instance.get("/api/v1/chat/fetchchats")
       if (res.data.success) {
@@ -72,6 +75,7 @@ const Sidebar = () => {
           return <Chat key={i} chat={chat} />
         })}
       </section>
+
     </section>
   )
 }
