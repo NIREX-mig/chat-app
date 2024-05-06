@@ -9,6 +9,7 @@ import { pushNewMessage, setAllMessages } from "@/redux/features/appSlice";
 import instance from "@/utils/axiosConfig";
 import { errorToast, messageToast } from "@/utils/toastshow";
 import ScrollableContainer from "@/components/ScrollableContainer";
+import Loader from "@/components/ui/Loader";
 
 
 export default function Chat() {
@@ -17,6 +18,7 @@ export default function Chat() {
 
   const [text, setText] = useState("");
   const [SelectedUser, setSelectedUser]= useState(null)
+  const [loading , setLoading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -51,15 +53,20 @@ export default function Chat() {
       return
     }
     try {
+      setLoading(true);
       const res = await instance.get(`/api/v1/message/${localSelectedUser?._id}`);
       dispatch(setAllMessages(res.data.data));
+      setLoading(false);
     } catch (error) {
       errorToast(error);
     }
   }
 
 
-  return (
+  return (loading ? 
+  <div className="absolute top-[50%] left-[50%]">
+    <Loader/>
+  </div> : 
     <section className=" w-full h-screen">
       <Header />
       <section className=" md:w-full h-[calc(100%-150px)] overflow-y-auto ">
@@ -75,6 +82,5 @@ export default function Chat() {
 
       <ChatFoter text={text} setText={setText} pressEnter={pressEnter} handleOnClick={handleOnClick} />
     </section>
-
   );
 }

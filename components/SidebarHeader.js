@@ -33,15 +33,20 @@ const SidebarHeader = () => {
 
   const handleLogOut = async () => {
     try {
+      const response = await instance.post('/api/v1/auth/logout');
+      if (response.data.success) {
+        localStorage.removeItem('refershToken');
+        localStorage.removeItem('user');
+        setModal(false);
+        successToast(response)
+        setTimeout(() => {
+          router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/login`);
+        }, 400);
+      }
+    } catch (error) {
       localStorage.removeItem('refershToken');
       localStorage.removeItem('user');
       router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/login`);
-      const response = await instance.post('/api/v1/auth/logout');
-      if (response.data.success) {
-        setModal(false);
-        successToast(response)
-      }
-    } catch (error) {
       setModal(false);
       errorToast(error)
     }

@@ -7,7 +7,6 @@ import AddChatModal from "./AddChatModal"
 import { FaSearch } from "react-icons/fa"
 import instance from "@/utils/axiosConfig";
 import { usePathname, useRouter } from "next/navigation";
-import { checkAuthentication } from "@/utils/auth";
 
 
 
@@ -40,9 +39,11 @@ const Sidebar = () => {
 
     try {
       const res = await instance.get("/api/v1/chat/fetchchats")
+
       if (res.data.success) {
         setChats(chats.concat(res.data.data));
       }
+      
     } catch (error) {
       console.log(error)
     }
