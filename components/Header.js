@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { IoMdArrowBack } from "react-icons/io";import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
+import socket from "@/socket";
 ;
 
 const Header = () => {
@@ -18,6 +19,7 @@ const Header = () => {
   }, [selectedUser,setSelectedUser]);
 
   const handleBackButton = () =>{
+    socket.emit("chat_leave", {chatId : selectedUser._id});
     router.back();
   }
 

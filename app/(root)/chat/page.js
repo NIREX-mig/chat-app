@@ -17,15 +17,21 @@ export default function Chat() {
   const { allMessages, selectedUser } = useSelector((state) => state.app);
 
   const [text, setText] = useState("");
-  const [SelectedUser, setSelectedUser]= useState(null)
-  const [loading , setLoading] = useState(false);
+  const [SelectedUser, setSelectedUser] = useState(null)
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     fetchMessages();
     setSelectedUser(JSON.parse(localStorage.getItem("selectedUser")));
-  }, [selectedUser,,setSelectedUser]);
+  }, [selectedUser, , setSelectedUser]);
+
+  useEffect(() =>{
+    socket.on("private_message", ({ message, chat, sender }) => {
+      dispatch(pushNewMessage({ message, chat, sender }));
+    });
+  },[])
 
   const pressEnter = (e) => {
     if (e.key === "Enter") {
@@ -38,7 +44,7 @@ export default function Chat() {
     try {
       setText("");
       let localSelectedUser = JSON.parse(localStorage.getItem("selectedUser"));
-
+      socket.emit("private_message", { message: text, chat: localSelectedUser._id, sender: localSelectedUser.participants._id })
       const res = await instance.post(`/api/v1/message/${localSelectedUser?._id}`, { message: text });
       dispatch(pushNewMessage(res.data.data));
     } catch (error) {
@@ -56,6 +62,7 @@ export default function Chat() {
       setLoading(true);
       const res = await instance.get(`/api/v1/message/${localSelectedUser?._id}`);
       dispatch(setAllMessages(res.data.data));
+
       setLoading(false);
     } catch (error) {
       errorToast(error);
@@ -63,16 +70,16 @@ export default function Chat() {
   }
 
 
-  return (loading ? 
-  <div className="absolute top-[50%] left-[50%]">
-    <Loader/>
-  </div> : 
+  return (loading ?
+    <div className="absolute top-[50%] left-[50%]">
+      <Loader />
+    </div> :
     <section className=" w-full h-screen">
       <Header />
       <section className=" md:w-full h-[calc(100%-150px)] overflow-y-auto ">
         <ScrollableContainer>
           {allMessages.map((msg, i) => {
-            return <article key={i} className={`my-1 m:max-w-[40%] max-w-[40%] px-2 rounded-lg text-wrap ${msg.sender._id == SelectedUser?.participants?._id ? "float-left bg-green-300 text-black" : "float-right bg-blue-300 text-black"} clear-both`}>
+            return <article key={i} className={`my-1 m:max-w-[40%] max-w-[40%] px-2 text-wrap ${msg.sender._id == SelectedUser?.participants?._id ? "float-left bg-green-300 text-black rounded-e-xl rounded-tl-xl" : "float-right bg-blue-300 text-black rounded-s-xl rounded-tr-xl"} clear-both `}>
               <p className="text-wrap p-2">{msg.message}</p>
             </article>
           })}

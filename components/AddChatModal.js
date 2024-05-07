@@ -1,5 +1,6 @@
 "use client";
 
+import socket from "@/socket";
 import instance from "@/utils/axiosConfig";
 import { errorToast, messageToast, successToast } from "@/utils/toastshow";
 import { useEffect, useState } from "react";
@@ -51,6 +52,8 @@ const AddChatModal = ({ handleClose, setModalOpen, setChats, chats }) => {
       if (response.data.success) {
         successToast(response);
         const newChat = response.data.data;
+        const receiverId = selectedOption._id;
+        // socket.emit("add_chat", {newChat,receiverId})
         setChats([newChat, ...chats]);
         setModalOpen(false);
       }

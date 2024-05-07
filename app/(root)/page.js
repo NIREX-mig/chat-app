@@ -3,7 +3,6 @@
 import instance from "@/utils/axiosConfig";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { getCookie } from "cookies-next";
 import { errorToast } from "@/utils/toastshow";
 
 

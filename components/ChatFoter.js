@@ -1,6 +1,7 @@
 "use client";
 
 import { IoSend } from "react-icons/io5";
+import EmojiPicker from 'emoji-picker-react';
 
 const ChatFoter = ({ text, setText, pressEnter, handleOnClick }) => {
 
@@ -21,6 +22,7 @@ const ChatFoter = ({ text, setText, pressEnter, handleOnClick }) => {
           placeholder="Type a message"
           className="focus:outline-none bg-secoundry h-10 rounded-md p-2 w-[90%]"
         />
+        {/* <EmojiPicker/> */}
         <button type="button" onClick={handleOnClick} className="p-2 group hover:bg-white rounded-full text-center ">
           <IoSend size={25} className="group-hover:fill-primary" />
         </button>
