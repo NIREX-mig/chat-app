@@ -4,6 +4,7 @@ import instance from "@/utils/axiosConfig";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { errorToast } from "@/utils/toastshow";
+import socket from "@/socket";
 
 
 export default function Home() {
@@ -11,15 +12,18 @@ export default function Home() {
   const pathname = usePathname();
   const router = useRouter();
 
-  useEffect(() => { 
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    socket.auth = { user }
+    socket.connect();
     checkAuth();
   }, [])
 
-  const checkAuth = async () =>{
+  const checkAuth = async () => {
     try {
       let refershToken = localStorage.getItem("refershToken");
-      const {data} = await instance.post("/api/v1/auth/refershtoken",{refershToken})
-      if(data.success){
+      const { data } = await instance.post("/api/v1/auth/refershtoken", { refershToken })
+      if (data.success) {
         localStorage.setItem("refershToken", data.data);
       }
     } catch (error) {

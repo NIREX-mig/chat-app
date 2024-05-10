@@ -28,10 +28,16 @@ export default function Chat() {
   }, [selectedUser, , setSelectedUser]);
 
   useEffect(() => {
-    socket.on("private_message", ({ message, chat, sender }) => {
-      dispatch(pushNewMessage({ message, chat, sender }));
+    socket.on("received_message", (newMessage) => {
+      dispatch(pushNewMessage(newMessage));
     });
-  }, [])
+    return () => {
+
+      socket.off("received_message", (newMessage) => {
+        console.log("off received message")
+      });
+    }
+  })
 
   const pressEnter = (e) => {
     if (e.key === "Enter") {
@@ -45,7 +51,7 @@ export default function Chat() {
       setText("");
       let localSelectedUser = JSON.parse(localStorage.getItem("selectedUser"));
       const { data } = await instance.post(`/api/v1/message/${localSelectedUser?._id}`, { message: text });
-      socket.emit("private_message", { message: text, chat: localSelectedUser._id, sender: localSelectedUser.participants._id })
+      socket.emit("private_message", data.data)
       dispatch(pushNewMessage(data.data));
     } catch (error) {
       errorToast(error);
