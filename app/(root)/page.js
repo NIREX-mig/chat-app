@@ -18,9 +18,9 @@ export default function Home() {
   const checkAuth = async () =>{
     try {
       let refershToken = localStorage.getItem("refershToken");
-      const res = await instance.post("/api/v1/auth/refershtoken",{refershToken})
-      if(res.data.success){
-        localStorage.setItem("refershToken", res.data.data);
+      const {data} = await instance.post("/api/v1/auth/refershtoken",{refershToken})
+      if(data.success){
+        localStorage.setItem("refershToken", data.data);
       }
     } catch (error) {
       router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/login`);

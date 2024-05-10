@@ -1,8 +1,9 @@
+"use client";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const successToast = (response) => {
-    return toast.success(response.data?.message, {
+const successToast = (data) => {
+    return toast.success(data?.message, {
         position: "top-center",
         autoClose: 800,
         hideProgressBar: true,

@@ -42,11 +42,11 @@ export default function Signup() {
       try {
         setDisabled(true)
         setLoading(true);
-        const response = await instance.post("/api/v1/auth/signup", { email: formData.email, username: formData.username, password: formData.password });
+        const { data } = await instance.post("/api/v1/auth/signup", { email: formData.email, username: formData.username, password: formData.password });
         setDisabled(false);
         setLoading(false);
-        if (response.data.success) {
-          successToast(response)
+        if (data.success) {
+          successToast(data)
           setFormData({ email: "", password: "", username: "", cpassword: "" })
           setDisabled(false);
           router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/login`)
@@ -138,8 +138,8 @@ export default function Signup() {
             </div>
             {errors.cpassword && <span className="text-red-600">{errors.cpassword}</span>}
             <button type="submit" className="bg-blue-800 py-2 w-full px-7 text-xl rounded-lg my-3 focus:ring-2 focus:ring-blue-700 hover:bg-blue-900 font-bold disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed" disabled={disabled} >
-              {loading ? <Loader/> : "Sign up"}
-              </button>
+              {loading ? <Loader /> : "Sign up"}
+            </button>
           </form>
           <p className="flex text-sm font-light ">
             login with account?

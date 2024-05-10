@@ -38,10 +38,10 @@ const Sidebar = () => {
     }
 
     try {
-      const res = await instance.get("/api/v1/chat/fetchchats")
+      const {data} = await instance.get("/api/v1/chat/fetchchats")
 
-      if (res.data.success) {
-        setChats(chats.concat(res.data.data));
+      if (data.success) {
+        setChats(chats.concat(data.data));
       }
       
     } catch (error) {

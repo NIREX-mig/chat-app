@@ -1,3 +1,5 @@
+"use client";
+
 import axios from "axios";
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;

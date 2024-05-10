@@ -44,9 +44,9 @@ export default function Chat() {
     try {
       setText("");
       let localSelectedUser = JSON.parse(localStorage.getItem("selectedUser"));
+      const {data} = await instance.post(`/api/v1/message/${localSelectedUser?._id}`, { message: text });
       socket.emit("private_message", { message: text, chat: localSelectedUser._id, sender: localSelectedUser.participants._id })
-      const res = await instance.post(`/api/v1/message/${localSelectedUser?._id}`, { message: text });
-      dispatch(pushNewMessage(res.data.data));
+      dispatch(pushNewMessage(data.data));
     } catch (error) {
       errorToast(error);
     }
@@ -60,8 +60,8 @@ export default function Chat() {
     }
     try {
       setLoading(true);
-      const res = await instance.get(`/api/v1/message/${localSelectedUser?._id}`);
-      dispatch(setAllMessages(res.data.data));
+      const {data} = await instance.get(`/api/v1/message/${localSelectedUser?._id}`);
+      dispatch(setAllMessages(data.data));
 
       setLoading(false);
     } catch (error) {

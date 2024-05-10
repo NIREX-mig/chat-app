@@ -46,16 +46,16 @@ export default function Login() {
         setLoading(true)
 
 
-        const response = await instance.post("/api/v1/auth/login", { email: formData.email, password: formData.password });
+        const { data } = await instance.post("/api/v1/auth/login", { email: formData.email, password: formData.password });
 
         setDisabled(false);
         setLoading(false);
 
-        if (response.data.success) {
-          localStorage.setItem("refershToken", response.data.data.refershToken);
-          const user = JSON.stringify(response.data.data.user)
+        if (data.success) {
+          localStorage.setItem("refershToken",data.data.refershToken);
+          const user = JSON.stringify(data.data.user)
           localStorage.setItem("user", user)
-          successToast(response)
+          successToast(data)
           setFormData({ email: "", password: "" });
           setDisabled(false);
           router.push(`${process.env.NEXT_PUBLIC_BASE_URL}`);

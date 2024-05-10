@@ -19,9 +19,9 @@ const AddChatModal = ({ handleClose, setModalOpen, setChats, chats }) => {
 
   const getOptions = async () => {
     try {
-      const res = await instance.get("/api/v1/chat/search");
-      if (res.data.success) {
-        const dataArray = res.data.data;
+      const {data} = await instance.get("/api/v1/chat/search");
+      if (data.success) {
+        const dataArray = data.data;
         let tempArray = [];
         for (let x in dataArray) {
           let object = {
@@ -48,12 +48,10 @@ const AddChatModal = ({ handleClose, setModalOpen, setChats, chats }) => {
     }
 
     try {
-      const response = await instance.post(`/api/v1/chat/createonetoonechat/${selectedOption.id}`);
-      if (response.data.success) {
-        successToast(response);
-        const newChat = response.data.data;
-        const receiverId = selectedOption._id;
-        // socket.emit("add_chat", {newChat,receiverId})
+      const {data} = await instance.post(`/api/v1/chat/createonetoonechat/${selectedOption.id}`);
+      if (data.success) {
+        successToast(data);
+        const newChat = data.data;
         setChats([newChat, ...chats]);
         setModalOpen(false);
       }
