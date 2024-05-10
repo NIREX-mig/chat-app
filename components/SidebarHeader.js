@@ -12,12 +12,11 @@ import { useSelector } from "react-redux";
 
 const SidebarHeader = () => {
 
+
   const [modal, setModal] = useState(false);
   const [userAvatar, setUserAvatar] = useState("");
 
   const router = useRouter();
-
-  const { logedinUser } = useSelector((state) => state.app);
 
 
   useEffect(() => {
@@ -33,12 +32,12 @@ const SidebarHeader = () => {
 
   const handleLogOut = async () => {
     try {
-      const response = await instance.post('/api/v1/auth/logout');
-      if (response.data.success) {
+      const {data} = await instance.post('/api/v1/auth/logout');
+      if (data.success) {
         localStorage.removeItem('refershToken');
         localStorage.removeItem('user');
         setModal(false);
-        successToast(response)
+        successToast(data)
         setTimeout(() => {
           router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/login`);
         }, 400);

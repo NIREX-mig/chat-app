@@ -34,7 +34,7 @@ const Header = () => {
             <p className="cursor-default">
               {SelectedUser?.participants?.email}
             </p>
-            <p className="text-sm cursor-default">Last active</p>
+            {/* <p className="text-sm cursor-default">Last active</p> */}
           </div>
         </div>
       </div>
