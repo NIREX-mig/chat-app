@@ -10,7 +10,7 @@ import instance from "@/utils/axiosConfig";
 import { errorToast, messageToast } from "@/utils/toastshow";
 import ScrollableContainer from "@/components/ScrollableContainer";
 import Loader from "@/components/ui/Loader";
-
+import moment from "moment";
 
 export default function Chat() {
 
@@ -27,11 +27,11 @@ export default function Chat() {
     setSelectedUser(JSON.parse(localStorage.getItem("selectedUser")));
   }, [selectedUser, , setSelectedUser]);
 
-  useEffect(() =>{
+  useEffect(() => {
     socket.on("private_message", ({ message, chat, sender }) => {
       dispatch(pushNewMessage({ message, chat, sender }));
     });
-  },[])
+  }, [])
 
   const pressEnter = (e) => {
     if (e.key === "Enter") {
@@ -44,7 +44,7 @@ export default function Chat() {
     try {
       setText("");
       let localSelectedUser = JSON.parse(localStorage.getItem("selectedUser"));
-      const {data} = await instance.post(`/api/v1/message/${localSelectedUser?._id}`, { message: text });
+      const { data } = await instance.post(`/api/v1/message/${localSelectedUser?._id}`, { message: text });
       socket.emit("private_message", { message: text, chat: localSelectedUser._id, sender: localSelectedUser.participants._id })
       dispatch(pushNewMessage(data.data));
     } catch (error) {
@@ -60,7 +60,7 @@ export default function Chat() {
     }
     try {
       setLoading(true);
-      const {data} = await instance.get(`/api/v1/message/${localSelectedUser?._id}`);
+      const { data } = await instance.get(`/api/v1/message/${localSelectedUser?._id}`);
       dispatch(setAllMessages(data.data));
 
       setLoading(false);
@@ -79,8 +79,9 @@ export default function Chat() {
       <section className=" md:w-full h-[calc(100%-150px)] overflow-y-auto ">
         <ScrollableContainer>
           {allMessages.map((msg, i) => {
-            return <article key={i} className={`my-1 m:max-w-[40%] max-w-[40%] px-2 text-wrap ${msg.sender._id == SelectedUser?.participants?._id ? "float-left bg-green-300 text-black rounded-e-xl rounded-tl-xl" : "float-right bg-blue-300 text-black rounded-s-xl rounded-tr-xl"} clear-both `}>
+            return <article key={i} className={`my-1 m:max-w-[40%] max-w-[40%] px-2 text-wrap ${msg.sender._id == SelectedUser?.participants?._id ? "float-left bg-green-300 text-black rounded-e-xl rounded-tl-xl" : "float-right bg-blue-300 text-black rounded-s-xl rounded-tr-xl"} clear-both flex flex-col items-end`}>
               <p className="text-wrap p-2">{msg.message}</p>
+              <p className="text-xs p-1">{moment(msg.createdAt).fromNow()}</p>
             </article>
           })}
         </ScrollableContainer>
